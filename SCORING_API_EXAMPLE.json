@@ -1,0 +1,2221 @@
+{
+  "version": "0.5.0",
+  "scoring_policy": "business50_ai50_v3",
+  "case_count": 12,
+  "verification": "Django APIClient + actual SDK parser over MockTransport; public APIs mocked; isolated migrated temporary SQLite, cache cleared between independent cases; no live model/API calls.",
+  "upstream_main_commit": "1cc0344d3cc22785fab53b129bc0e48586397b59",
+  "request": {
+    "url": "https://shop.example.com/withdraw",
+    "business_info": {
+      "business_name": "합성상점",
+      "business_number": "123-45-67890"
+    },
+    "page_context": "출금하려면 5만 원을 먼저 입금하세요.",
+    "page_observations": [
+      {
+        "id": "demo-withdrawal",
+        "source_url": "https://shop.example.com/guide",
+        "kind": "linked_policy",
+        "text": "출금하려면 5만 원을 먼저 입금하세요.",
+        "observed_at": "2026-11-15T00:00:00Z"
+      }
+    ]
+  },
+  "response": {
+    "scan_id": "4010aaaa-abd0-4546-b947-c0cac585615b",
+    "url": "https://shop.example.com/withdraw",
+    "domain": "shop.example.com",
+    "status": "received",
+    "business_info": {
+      "business_name": "합성상점",
+      "business_number": "123-45-67890"
+    },
+    "risk_score": 90,
+    "verdict": "HIGH_RISK",
+    "risk_factors": [
+      {
+        "code": "FTC_NO_MATCH",
+        "name": "공정위 업체 조회",
+        "result": "NO_MATCH",
+        "points": 40,
+        "reason": "입력한 사업자등록번호와 일치하는 업체를 찾지 못했습니다."
+      },
+      {
+        "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+        "points": 50,
+        "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+        "source": "ai",
+        "evidence": [
+          {
+            "type": "ADVANCE_PAYMENT_REQUIRED",
+            "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+            "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+            "source_id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "observed_at": "2026-11-15T00:00:00Z",
+            "source": "ai"
+          }
+        ]
+      }
+    ],
+    "checked_items": [
+      "displayed_business_number_format",
+      "nts_business_status",
+      "ftc_business_lookup",
+      "ai_payment_context"
+    ],
+    "score_status": "completed",
+    "scoring_policy": "business50_ai50_v3",
+    "score_breakdown": {
+      "business": {
+        "score": 40,
+        "max_score": 50,
+        "raw_score": 40,
+        "status": "completed",
+        "capped": false
+      },
+      "ai": {
+        "score": 50,
+        "max_score": 50,
+        "status": "completed",
+        "raw_score": 50,
+        "capped": false
+      }
+    },
+    "public_api_cache": {
+      "status": "miss",
+      "ttl_hours": 24
+    },
+    "analyses": {
+      "nts": {
+        "status": "completed",
+        "business_status": "ACTIVE",
+        "business_status_description": "계속사업자"
+      },
+      "ftc": {
+        "status": "completed",
+        "search_method": "BUSINESS_NUMBER",
+        "match_status": "NO_MATCH",
+        "candidates": []
+      },
+      "ai": {
+        "status": "completed",
+        "signals": [
+          {
+            "type": "ADVANCE_PAYMENT_REQUIRED",
+            "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+            "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+            "source_id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "observed_at": "2026-11-15T00:00:00Z",
+            "source": "ai"
+          }
+        ],
+        "assessment": {
+          "state": "advance_payment_required",
+          "withdrawal_status": "risk_detected",
+          "observed_stages": [
+            "ADVANCE_PAYMENT_REQUIRED"
+          ]
+        },
+        "risk_score": 50,
+        "max_score": 50,
+        "raw_score": 50,
+        "capped": false,
+        "scoring_status": "completed",
+        "scoring_policy": "business50_ai50_v3",
+        "risk_factors": [
+          {
+            "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+            "points": 50,
+            "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+            "source": "ai",
+            "evidence": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ]
+          }
+        ]
+      },
+      "business_input": {
+        "status": "valid",
+        "displayed_value": "123-45-67890",
+        "digit_count": 10,
+        "normalized": "1234567890"
+      }
+    }
+  },
+  "additional_cases": [
+    {
+      "case": "사업자원점수70→50+AI50=100",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "123-45-67890"
+        },
+        "page_context": "출금하려면 5만 원을 먼저 입금하세요.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "출금하려면 5만 원을 먼저 입금하세요.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ]
+      },
+      "response": {
+        "scan_id": "f8bbaa3a-cf74-40c9-b0a2-037579ca4942",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "123-45-67890"
+        },
+        "risk_score": 100,
+        "verdict": "HIGH_RISK",
+        "risk_factors": [
+          {
+            "code": "ABNORMAL_BUSINESS_STATUS",
+            "name": "사업자 상태",
+            "result": "MISMATCH",
+            "points": 21,
+            "reason": "사업자 상태가 정상적이지 않습니다: CLOSED",
+            "raw_points": 30
+          },
+          {
+            "code": "FTC_NO_MATCH",
+            "name": "공정위 업체 조회",
+            "result": "NO_MATCH",
+            "points": 29,
+            "reason": "입력한 사업자등록번호와 일치하는 업체를 찾지 못했습니다.",
+            "raw_points": 40
+          },
+          {
+            "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+            "points": 50,
+            "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+            "source": "ai",
+            "evidence": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "displayed_business_number_format",
+          "nts_business_status",
+          "ftc_business_lookup",
+          "ai_payment_context"
+        ],
+        "score_status": "completed",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 50,
+            "max_score": 50,
+            "raw_score": 70,
+            "status": "completed",
+            "capped": true
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 50,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "completed",
+            "business_status": "CLOSED"
+          },
+          "ftc": {
+            "status": "completed",
+            "search_method": "BUSINESS_NUMBER",
+            "match_status": "NO_MATCH",
+            "candidates": []
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ],
+            "assessment": {
+              "state": "advance_payment_required",
+              "withdrawal_status": "risk_detected",
+              "observed_stages": [
+                "ADVANCE_PAYMENT_REQUIRED"
+              ]
+            },
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+                "points": 50,
+                "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+                "source": "ai",
+                "evidence": [
+                  {
+                    "type": "ADVANCE_PAYMENT_REQUIRED",
+                    "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                    "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                    "source_id": "demo-withdrawal",
+                    "source_url": "https://shop.example.com/guide",
+                    "kind": "linked_policy",
+                    "observed_at": "2026-11-15T00:00:00Z",
+                    "source": "ai"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "valid",
+            "displayed_value": "123-45-67890",
+            "digit_count": 10,
+            "normalized": "1234567890"
+          }
+        }
+      },
+      "nts_calls": 1
+    },
+    {
+      "case": "번호형식오류20+상호명조회실패25+조합5+AI0=50",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ]
+      },
+      "response": {
+        "scan_id": "92806bd4-06e7-4ed3-9350-432b353950ad",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "risk_score": 50,
+        "verdict": "CAUTION",
+        "risk_factors": [
+          {
+            "code": "MALFORMED_BUSINESS_NUMBER",
+            "name": "표시 사업자번호 형식",
+            "result": "MALFORMED",
+            "points": 20,
+            "reason": "페이지에 표시된 사업자번호는 숫자 11자리로 10자리 형식과 다릅니다.",
+            "evidence": "125-86-112516",
+            "digit_count": 11
+          },
+          {
+            "code": "FTC_BUSINESS_NAME_NOT_FOUND",
+            "message": "공정거래위원회에서 해당 상호명을 찾을 수 없습니다.",
+            "points": 25
+          },
+          {
+            "code": "MALFORMED_NUMBER_AND_FTC_NAME_NOT_FOUND",
+            "name": "사업자번호 형식 오류·상호명 미조회 복합 근거",
+            "result": "COMBINED",
+            "points": 5,
+            "reason": "사업자번호 형식 오류와 공정위 상호명 검색 결과 없음이 함께 확인되어 복합 위험 5점을 추가했습니다."
+          }
+        ],
+        "checked_items": [
+          "displayed_business_number_format",
+          "ftc_business_name_lookup",
+          "business_identity_combination",
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "status": "partial",
+            "capped": false
+          },
+          "ai": {
+            "score": 0,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 0,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null,
+            "reason": "MALFORMED_BUSINESS_NUMBER"
+          },
+          "ftc": {
+            "status": "completed",
+            "search_method": "BUSINESS_NAME",
+            "match_status": "NO_MATCH",
+            "candidates": []
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "risk_score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": []
+          },
+          "business_input": {
+            "status": "malformed",
+            "displayed_value": "125-86-112516",
+            "digit_count": 11,
+            "normalized": "12586112516"
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "직접요구만50점이어도높은위험",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "출금하려면 5만 원을 먼저 입금하세요.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "출금하려면 5만 원을 먼저 입금하세요.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ]
+      },
+      "response": {
+        "scan_id": "2f6d83ec-49f3-431f-93f2-46a2a9e9f496",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 50,
+        "verdict": "HIGH_RISK",
+        "risk_factors": [
+          {
+            "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+            "points": 50,
+            "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+            "source": "ai",
+            "evidence": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 50,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ],
+            "assessment": {
+              "state": "advance_payment_required",
+              "withdrawal_status": "risk_detected",
+              "observed_stages": [
+                "ADVANCE_PAYMENT_REQUIRED"
+              ]
+            },
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+                "points": 50,
+                "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+                "source": "ai",
+                "evidence": [
+                  {
+                    "type": "ADVANCE_PAYMENT_REQUIRED",
+                    "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                    "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                    "source_id": "demo-withdrawal",
+                    "source_url": "https://shop.example.com/guide",
+                    "kind": "linked_policy",
+                    "observed_at": "2026-11-15T00:00:00Z",
+                    "source": "ai"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "번호형식오류+상호명조회실패50+AI50=100",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "page_context": "출금하려면 5만 원을 먼저 입금하세요.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "출금하려면 5만 원을 먼저 입금하세요.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ]
+      },
+      "response": {
+        "scan_id": "b2c63208-830b-489e-b87b-156cedf0c253",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "risk_score": 100,
+        "verdict": "HIGH_RISK",
+        "risk_factors": [
+          {
+            "code": "MALFORMED_BUSINESS_NUMBER",
+            "name": "표시 사업자번호 형식",
+            "result": "MALFORMED",
+            "points": 20,
+            "reason": "페이지에 표시된 사업자번호는 숫자 11자리로 10자리 형식과 다릅니다.",
+            "evidence": "125-86-112516",
+            "digit_count": 11
+          },
+          {
+            "code": "FTC_BUSINESS_NAME_NOT_FOUND",
+            "message": "공정거래위원회에서 해당 상호명을 찾을 수 없습니다.",
+            "points": 25
+          },
+          {
+            "code": "MALFORMED_NUMBER_AND_FTC_NAME_NOT_FOUND",
+            "name": "사업자번호 형식 오류·상호명 미조회 복합 근거",
+            "result": "COMBINED",
+            "points": 5,
+            "reason": "사업자번호 형식 오류와 공정위 상호명 검색 결과 없음이 함께 확인되어 복합 위험 5점을 추가했습니다."
+          },
+          {
+            "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+            "points": 50,
+            "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+            "source": "ai",
+            "evidence": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "displayed_business_number_format",
+          "ftc_business_name_lookup",
+          "business_identity_combination",
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "status": "partial",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 50,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null,
+            "reason": "MALFORMED_BUSINESS_NUMBER"
+          },
+          "ftc": {
+            "status": "completed",
+            "search_method": "BUSINESS_NAME",
+            "match_status": "NO_MATCH",
+            "candidates": []
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ],
+            "assessment": {
+              "state": "advance_payment_required",
+              "withdrawal_status": "risk_detected",
+              "observed_stages": [
+                "ADVANCE_PAYMENT_REQUIRED"
+              ]
+            },
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+                "points": 50,
+                "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+                "source": "ai",
+                "evidence": [
+                  {
+                    "type": "ADVANCE_PAYMENT_REQUIRED",
+                    "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                    "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                    "source_id": "demo-withdrawal",
+                    "source_url": "https://shop.example.com/guide",
+                    "kind": "linked_policy",
+                    "observed_at": "2026-11-15T00:00:00Z",
+                    "source": "ai"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "malformed",
+            "displayed_value": "125-86-112516",
+            "digit_count": 11,
+            "normalized": "12586112516"
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "공지없음50+후기없음40=원점수90→AI50",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "absent",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "현재 화면의 보이는 메뉴 확인"
+          },
+          "notices": {
+            "status": "missing",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+            "dates": [],
+            "latest_date_confirmed": false
+          },
+          "reviews": {
+            "status": "missing",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 구매후기가 없습니다."
+          }
+        }
+      },
+      "response": {
+        "scan_id": "b65bf37d-4cc7-4f0c-9d33-8d7ca8a4cf22",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 50,
+        "verdict": "CAUTION",
+        "risk_factors": [
+          {
+            "code": "AI_NOTICE_MISSING",
+            "points": 28,
+            "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_NOTICE_MISSING",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 50
+          },
+          {
+            "code": "AI_REVIEW_MISSING",
+            "points": 22,
+            "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_REVIEW_MISSING",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 40
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 90,
+            "capped": true
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "absent",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "현재 화면의 보이는 메뉴 확인",
+                "reason": ""
+              },
+              "notices": {
+                "status": "missing",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "dates": [],
+                "latest_date_confirmed": false,
+                "reason": "",
+                "freshness": "unverified",
+                "latest_date": null,
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "missing",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 90,
+            "capped": true,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_NOTICE_MISSING",
+                "points": 28,
+                "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_NOTICE_MISSING",
+                    "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 50
+              },
+              {
+                "code": "AI_REVIEW_MISSING",
+                "points": 22,
+                "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_REVIEW_MISSING",
+                    "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 40
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "메뉴40+공지없음50+후기없음40=원점수130→AI50",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "출금 신청"
+          },
+          "notices": {
+            "status": "missing",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+            "dates": [],
+            "latest_date_confirmed": false
+          },
+          "reviews": {
+            "status": "missing",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 구매후기가 없습니다."
+          }
+        }
+      },
+      "response": {
+        "scan_id": "285eb3db-ba8a-48f3-83f5-6176be30679e",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 50,
+        "verdict": "CAUTION",
+        "risk_factors": [
+          {
+            "code": "AI_PAYMENT_MENU",
+            "points": 16,
+            "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_PAYMENT_MENU",
+                "evidence": "출금 신청",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 40
+          },
+          {
+            "code": "AI_NOTICE_MISSING",
+            "points": 19,
+            "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_NOTICE_MISSING",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 50
+          },
+          {
+            "code": "AI_REVIEW_MISSING",
+            "points": 15,
+            "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_REVIEW_MISSING",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 40
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 130,
+            "capped": true
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "출금 신청",
+                "reason": ""
+              },
+              "notices": {
+                "status": "missing",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "dates": [],
+                "latest_date_confirmed": false,
+                "reason": "",
+                "freshness": "unverified",
+                "latest_date": null,
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "missing",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 130,
+            "capped": true,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_PAYMENT_MENU",
+                "points": 16,
+                "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_PAYMENT_MENU",
+                    "evidence": "출금 신청",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 40
+              },
+              {
+                "code": "AI_NOTICE_MISSING",
+                "points": 19,
+                "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_NOTICE_MISSING",
+                    "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 50
+              },
+              {
+                "code": "AI_REVIEW_MISSING",
+                "points": 15,
+                "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_REVIEW_MISSING",
+                    "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 40
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "메인메뉴40·공지후기로그인/시간초과는미확인",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "출금 신청"
+          },
+          "notices": {
+            "status": "unverified",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "로그인이 필요합니다.",
+            "reason": "login_required",
+            "dates": [],
+            "latest_date_confirmed": false
+          },
+          "reviews": {
+            "status": "unverified",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "읽지 못한 후기 목록",
+            "reason": "timeout"
+          }
+        }
+      },
+      "response": {
+        "scan_id": "5d533e21-5412-4fbc-9eb6-ec40d1d466c1",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 40,
+        "verdict": "CAUTION",
+        "risk_factors": [
+          {
+            "code": "AI_PAYMENT_MENU",
+            "points": 40,
+            "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_PAYMENT_MENU",
+                "evidence": "출금 신청",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 40,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 40,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "출금 신청",
+                "reason": ""
+              },
+              "notices": {
+                "status": "unverified",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "로그인이 필요합니다.",
+                "reason": "login_required",
+                "dates": [],
+                "latest_date_confirmed": false,
+                "freshness": "unverified",
+                "latest_date": null,
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "unverified",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "읽지 못한 후기 목록",
+                "reason": "timeout"
+              }
+            },
+            "site_checks_status": "partial",
+            "risk_score": 40,
+            "max_score": 50,
+            "raw_score": 40,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_PAYMENT_MENU",
+                "points": 40,
+                "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_PAYMENT_MENU",
+                    "evidence": "출금 신청",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "최근1개월공지없음50",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "absent",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "현재 화면의 보이는 메뉴 확인"
+          },
+          "notices": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "공지사항 작성일 2026-09-16",
+            "dates": [
+              "2026-09-16"
+            ],
+            "latest_date_confirmed": true
+          },
+          "reviews": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "구매후기 1건"
+          }
+        }
+      },
+      "response": {
+        "scan_id": "71211c32-ee82-40c7-89b3-fd1d66518784",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 50,
+        "verdict": "CAUTION",
+        "risk_factors": [
+          {
+            "code": "AI_NOTICE_STALE",
+            "points": 50,
+            "message": "확인한 공지 목록의 최신 작성일이 최근1개월 범위보다 이전입니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_NOTICE_STALE",
+                "evidence": "공지사항 작성일 2026-09-16",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 50,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "absent",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "현재 화면의 보이는 메뉴 확인",
+                "reason": ""
+              },
+              "notices": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "공지사항 작성일 2026-09-16",
+                "dates": [
+                  "2026-09-16"
+                ],
+                "latest_date_confirmed": true,
+                "reason": "",
+                "freshness": "stale",
+                "latest_date": "2026-09-16",
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "구매후기 1건",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_NOTICE_STALE",
+                "points": 50,
+                "message": "확인한 공지 목록의 최신 작성일이 최근1개월 범위보다 이전입니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_NOTICE_STALE",
+                    "evidence": "공지사항 작성일 2026-09-16",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "최근공지·후기확인·출금충전메뉴없음0",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "absent",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "현재 화면의 보이는 메뉴 확인"
+          },
+          "notices": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "공지사항 작성일 2026-11-15",
+            "dates": [
+              "2026-11-15"
+            ],
+            "latest_date_confirmed": true
+          },
+          "reviews": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "구매후기 1건"
+          }
+        }
+      },
+      "response": {
+        "scan_id": "4f88f657-41be-45b3-a377-dc13f88d4952",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 0,
+        "verdict": "INSUFFICIENT_DATA",
+        "risk_factors": [],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 0,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 0,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "absent",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "현재 화면의 보이는 메뉴 확인",
+                "reason": ""
+              },
+              "notices": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "공지사항 작성일 2026-11-15",
+                "dates": [
+                  "2026-11-15"
+                ],
+                "latest_date_confirmed": true,
+                "reason": "",
+                "freshness": "recent",
+                "latest_date": "2026-11-15",
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "구매후기 1건",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": []
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "사업자복합50+공지없음AI50=총100",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "page_context": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "판매대금에서 수수료를 차감한 뒤 지급합니다.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "absent",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "현재 화면의 보이는 메뉴 확인"
+          },
+          "notices": {
+            "status": "empty",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+            "dates": [],
+            "latest_date_confirmed": false
+          },
+          "reviews": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "구매후기 1건"
+          }
+        }
+      },
+      "response": {
+        "scan_id": "26f685b3-2eda-4262-bc41-160717e710c0",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {
+          "business_name": "합성상점",
+          "business_number": "",
+          "displayed_business_number": "125-86-112516"
+        },
+        "risk_score": 100,
+        "verdict": "HIGH_RISK",
+        "risk_factors": [
+          {
+            "code": "MALFORMED_BUSINESS_NUMBER",
+            "name": "표시 사업자번호 형식",
+            "result": "MALFORMED",
+            "points": 20,
+            "reason": "페이지에 표시된 사업자번호는 숫자 11자리로 10자리 형식과 다릅니다.",
+            "evidence": "125-86-112516",
+            "digit_count": 11
+          },
+          {
+            "code": "FTC_BUSINESS_NAME_NOT_FOUND",
+            "message": "공정거래위원회에서 해당 상호명을 찾을 수 없습니다.",
+            "points": 25
+          },
+          {
+            "code": "MALFORMED_NUMBER_AND_FTC_NAME_NOT_FOUND",
+            "name": "사업자번호 형식 오류·상호명 미조회 복합 근거",
+            "result": "COMBINED",
+            "points": 5,
+            "reason": "사업자번호 형식 오류와 공정위 상호명 검색 결과 없음이 함께 확인되어 복합 위험 5점을 추가했습니다."
+          },
+          {
+            "code": "AI_NOTICE_MISSING",
+            "points": 50,
+            "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_NOTICE_MISSING",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ]
+          }
+        ],
+        "checked_items": [
+          "displayed_business_number_format",
+          "ftc_business_name_lookup",
+          "business_identity_combination",
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "status": "partial",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 50,
+            "capped": false
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null,
+            "reason": "MALFORMED_BUSINESS_NUMBER"
+          },
+          "ftc": {
+            "status": "completed",
+            "search_method": "BUSINESS_NAME",
+            "match_status": "NO_MATCH",
+            "candidates": []
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [],
+            "assessment": {
+              "state": "unverified",
+              "withdrawal_status": "unverified",
+              "observed_stages": []
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "absent",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "현재 화면의 보이는 메뉴 확인",
+                "reason": ""
+              },
+              "notices": {
+                "status": "empty",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "dates": [],
+                "latest_date_confirmed": false,
+                "reason": "",
+                "freshness": "unverified",
+                "latest_date": null,
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "구매후기 1건",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 50,
+            "capped": false,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_NOTICE_MISSING",
+                "points": 50,
+                "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_NOTICE_MISSING",
+                    "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ]
+              }
+            ]
+          },
+          "business_input": {
+            "status": "malformed",
+            "displayed_value": "125-86-112516",
+            "digit_count": 11,
+            "normalized": "12586112516"
+          }
+        }
+      },
+      "nts_calls": 0
+    },
+    {
+      "case": "직접요구와세사이트조건=AI원점수180→50·직접HIGH유지",
+      "request": {
+        "url": "https://shop.example.com/withdraw",
+        "business_info": {},
+        "page_context": "출금하려면 5만 원을 먼저 입금하세요.",
+        "page_observations": [
+          {
+            "id": "demo-withdrawal",
+            "source_url": "https://shop.example.com/guide",
+            "kind": "linked_policy",
+            "text": "출금하려면 5만 원을 먼저 입금하세요.",
+            "observed_at": "2026-11-15T00:00:00Z"
+          }
+        ],
+        "site_checks": {
+          "payment_menus": {
+            "status": "present",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "출금 신청"
+          },
+          "notices": {
+            "status": "empty",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+            "dates": [],
+            "latest_date_confirmed": false
+          },
+          "reviews": {
+            "status": "empty",
+            "source_url": "https://shop.example.com/withdraw",
+            "observed_at": "2026-11-14T18:59:24.000431+00:00",
+            "scope": "current_page",
+            "evidence": "확인한 공개 화면에 구매후기가 없습니다."
+          }
+        }
+      },
+      "response": {
+        "scan_id": "c39b51b8-3446-4d8d-abdd-05e095863681",
+        "url": "https://shop.example.com/withdraw",
+        "domain": "shop.example.com",
+        "status": "received",
+        "business_info": {},
+        "risk_score": 50,
+        "verdict": "HIGH_RISK",
+        "risk_factors": [
+          {
+            "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+            "points": 14,
+            "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+            "source": "ai",
+            "evidence": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ],
+            "raw_points": 50
+          },
+          {
+            "code": "AI_PAYMENT_MENU",
+            "points": 11,
+            "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_PAYMENT_MENU",
+                "evidence": "출금 신청",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 40
+          },
+          {
+            "code": "AI_NOTICE_MISSING",
+            "points": 14,
+            "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_NOTICE_MISSING",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 50
+          },
+          {
+            "code": "AI_REVIEW_MISSING",
+            "points": 11,
+            "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+            "source": "site_rule",
+            "evidence": [
+              {
+                "type": "AI_REVIEW_MISSING",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "source": "site_rule"
+              }
+            ],
+            "raw_points": 40
+          }
+        ],
+        "checked_items": [
+          "ai_payment_context"
+        ],
+        "score_status": "partial",
+        "scoring_policy": "business50_ai50_v3",
+        "score_breakdown": {
+          "business": {
+            "score": 0,
+            "max_score": 50,
+            "raw_score": 0,
+            "status": "unavailable",
+            "capped": false
+          },
+          "ai": {
+            "score": 50,
+            "max_score": 50,
+            "status": "completed",
+            "raw_score": 180,
+            "capped": true
+          }
+        },
+        "public_api_cache": {
+          "status": "miss",
+          "ttl_hours": 24
+        },
+        "analyses": {
+          "nts": {
+            "status": "skipped",
+            "business_status": null
+          },
+          "ftc": {
+            "status": "skipped",
+            "match_status": "UNKNOWN"
+          },
+          "ai": {
+            "status": "completed",
+            "signals": [
+              {
+                "type": "ADVANCE_PAYMENT_REQUIRED",
+                "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                "source_id": "demo-withdrawal",
+                "source_url": "https://shop.example.com/guide",
+                "kind": "linked_policy",
+                "observed_at": "2026-11-15T00:00:00Z",
+                "source": "ai"
+              }
+            ],
+            "assessment": {
+              "state": "advance_payment_required",
+              "withdrawal_status": "risk_detected",
+              "observed_stages": [
+                "ADVANCE_PAYMENT_REQUIRED"
+              ]
+            },
+            "site_checks": {
+              "payment_menus": {
+                "status": "present",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "출금 신청",
+                "reason": ""
+              },
+              "notices": {
+                "status": "empty",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                "dates": [],
+                "latest_date_confirmed": false,
+                "reason": "",
+                "freshness": "unverified",
+                "latest_date": null,
+                "cutoff_date": "2026-10-15"
+              },
+              "reviews": {
+                "status": "empty",
+                "source_url": "https://shop.example.com/withdraw",
+                "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                "scope": "current_page",
+                "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                "reason": ""
+              }
+            },
+            "site_checks_status": "completed",
+            "risk_score": 50,
+            "max_score": 50,
+            "raw_score": 180,
+            "capped": true,
+            "scoring_status": "completed",
+            "scoring_policy": "business50_ai50_v3",
+            "risk_factors": [
+              {
+                "code": "AI_ADVANCE_PAYMENT_REQUIRED",
+                "points": 14,
+                "message": "대금 수령이나 출금·계정 해제를 조건으로 별도 선입금을 요구하는 원문이 확인됐습니다.",
+                "source": "ai",
+                "evidence": [
+                  {
+                    "type": "ADVANCE_PAYMENT_REQUIRED",
+                    "evidence": "출금하려면 5만 원을 먼저 입금하세요.",
+                    "reason": "출금 전에 별도의 입금을 요구하는 조건입니다.",
+                    "source_id": "demo-withdrawal",
+                    "source_url": "https://shop.example.com/guide",
+                    "kind": "linked_policy",
+                    "observed_at": "2026-11-15T00:00:00Z",
+                    "source": "ai"
+                  }
+                ],
+                "raw_points": 50
+              },
+              {
+                "code": "AI_PAYMENT_MENU",
+                "points": 11,
+                "message": "현재 공개 화면에 출금신청 또는 충전신청 메뉴가 확인됐습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_PAYMENT_MENU",
+                    "evidence": "출금 신청",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 40
+              },
+              {
+                "code": "AI_NOTICE_MISSING",
+                "points": 14,
+                "message": "확인한 공개 범위에서 공지사항을 찾지 못했거나 공지 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_NOTICE_MISSING",
+                    "evidence": "확인한 공개 화면에 공지사항이 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 50
+              },
+              {
+                "code": "AI_REVIEW_MISSING",
+                "points": 11,
+                "message": "확인한 공개 범위에서 구매후기를 찾지 못했거나 구매후기 목록이 비어 있습니다.",
+                "source": "site_rule",
+                "evidence": [
+                  {
+                    "type": "AI_REVIEW_MISSING",
+                    "evidence": "확인한 공개 화면에 구매후기가 없습니다.",
+                    "source_url": "https://shop.example.com/withdraw",
+                    "observed_at": "2026-11-14T18:59:24.000431+00:00",
+                    "scope": "current_page",
+                    "source": "site_rule"
+                  }
+                ],
+                "raw_points": 40
+              }
+            ]
+          },
+          "business_input": {
+            "status": "unavailable",
+            "displayed_value": "",
+            "digit_count": 0,
+            "normalized": ""
+          }
+        }
+      },
+      "nts_calls": 0
+    }
+  ]
+}

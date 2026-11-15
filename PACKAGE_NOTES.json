@@ -1,0 +1,41 @@
+{
+  "source_bases": {
+    "frontend": "3f32a1bffae6d81e0cc4831295d3fe373dd1e0bc",
+    "backend": "1cc0344d3cc22785fab53b129bc0e48586397b59"
+  },
+  "includes_uncommitted_work": true,
+  "delivery_only_changes": [
+    {
+      "file": "WOOWANGTHON_TEAM_25_BE/app/external_api/nts/client.py",
+      "change": "Embedded credential replaced by NTS_SERVICE_KEY environment variable."
+    },
+    {
+      "file": "WOOWANGTHON_TEAM_25_BE/app/external_api/ftc/client.py",
+      "change": "Embedded credential replaced by FTC_SERVICE_KEY environment variable."
+    },
+    {
+      "file": "WOOWANGTHON_TEAM_25_BE/app/config/settings.py",
+      "change": "Embedded credential replaced by DJANGO_SECRET_KEY with local-only fallback; root/scan log levels INFO to avoid HTTP debug query logging."
+    }
+  ],
+  "excluded": [
+    ".git",
+    ".venv",
+    "node_modules",
+    ".env files",
+    "databases",
+    "logs",
+    "cache",
+    "test output"
+  ],
+  "actual_openai_calls": 0,
+  "actual_public_api_calls": 0,
+  "installed_chrome_verification": "Blocked by administrator ExtensionInstallBlocklist policy",
+  "history_scope": "Popup-observed same-origin redacted excerpts only; session storage, 2h TTL; no unattended browsing tracking.",
+  "workspace_git_heads": {
+    "frontend": "3f32a1bffae6d81e0cc4831295d3fe373dd1e0bc",
+    "backend": "9dcf876f85d402dfc784a34fc73e76f4504e93a4"
+  },
+  "integrated_upstream_main": "1cc0344d3cc22785fab53b129bc0e48586397b59",
+  "scoring_policy": "business50_ai50_v3"
+}

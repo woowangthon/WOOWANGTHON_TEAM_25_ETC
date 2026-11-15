@@ -1,0 +1,84 @@
+우왕톤 FE·BE 통합 개선본 v0.5.0 — 공개 출금 안내 + 단계별 관찰 기록
+
+1. ZIP을 새 폴더에 풀고 두 프로젝트 폴더를 나란히 유지하세요.
+   Chrome 확장 버전 0.5.0인지 확인하세요. 이전 확장과 실행 중인 Django를 종료하고 새 폴더를 사용하세요.
+2. FE/README.md에 Windows PowerShell 실행과 Chrome 확인 순서가 있습니다.
+   기존 작업본은 UPDATE_FROM_PREVIOUS.txt대로 소스를 교체하고 migrate를 실행하세요.
+   SCORING_API_EXAMPLE.json에는 모의 API 요청/응답의 50/90/100점 및 직접 경고50점 예시가 있습니다.
+3. 새 storage 권한이 있으므로 기존 확장을 새로고침하거나 다시 로드하세요.
+
+가장 빠른 외부 API 없는 확인
+  FE 폴더: npm run mock
+  Chrome: chrome://extensions → 개발자 모드 → 압축해제된 확장 프로그램 로드 → FE 폴더
+  http://127.0.0.1:4173/tests/fixtures/flow-stage.html?stage=menu
+    메뉴만 보이면 질문 + 출금 조건 미확인
+  http://127.0.0.1:4173/tests/fixtures/flow-home.html
+    같은 사이트 공개 출금 안내까지 읽고 경고 + 근거 + 출처 URL
+  http://127.0.0.1:4173/tests/fixtures/flow-stage.html?stage=tax
+    세금 납부 확인 뒤 수익금 지급 조건 → 이전 기록 없이 경고
+  http://127.0.0.1:4173/tests/fixtures/flow-stage.html?stage=deduction
+    수수료 차감만으로 자동 경고 없음 + 출금 조건 미확인
+  같은 사이트의 독립 사례 사이에는 '이 사이트 기록 지우기' 후 팝업을 다시 여세요.
+  단계 연결은 reward → earnings → restricted → tax에서 각각 팝업을 열고 닫습니다.
+
+실제 Django에 연결 (Windows PowerShell, 두 터미널)
+  먼저 npm run mock을 종료하세요. 모의 API도 8000을 사용합니다.
+  터미널 1, BE 폴더:
+    python -m venv .venv
+    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+  OPENAI_API_KEY는 이 터미널의 서버 환경변수로 설정하세요.
+  OPENAI_MODEL 기본값은 gpt-6-luna입니다. 기존 설정값이 있으면 그대로 사용합니다.
+  실제 공공 API는 NTS_SERVICE_KEY와 FTC_SERVICE_KEY가 필요합니다.
+  키를 echo/코드/로그/채팅에 붙여 넣지 마세요.
+  DJANGO_SECRET_KEY는 배포 환경에서 별도로 설정합니다. 기본값은 로컬 개발용입니다.
+  실제 확장 ID를 BE/app/config/settings.py CORS_ALLOWED_ORIGINS에 허용하세요.
+    .\.venv\Scripts\python.exe app\manage.py migrate
+    .\.venv\Scripts\python.exe app\manage.py runserver 127.0.0.1:8000 --noreload
+  터미널 2, FE 폴더 (모의 API 없이 페이지만):
+    python -m http.server 4173 --bind 127.0.0.1
+  위 합성 페이지 주소에서 확장 팝업을 엽니다.
+
+분석 결과 해석
+  표시 번호 오류20점 + 공정위 상호명 검색 실패25점이 함께 확인되면 조합 가산5점을 더해 사업자50점입니다.
+  공지 없음 또는 최근1개월 공지 없음은AI50점, 보이는 출금/충전신청 메뉴는AI40점, 구매후기 없음은AI40점입니다.
+  메인 메뉴의 연결 화면이 로그인으로 막혀도 메뉴40점은 반영합니다.
+  공지 없음50 + 후기 없음40 =AI원점수90 → 반영50점이며 메뉴까지130이어도50입니다.
+  직접 선입금 요구는 총점이50점이어도 높은 위험 경고를 유지합니다. 사이트 관찰 점수만으로 직접입금 경고를 만들지 않습니다.
+  이 통합본은 GitHub main 1cc0344 기준이며 MERGE_NOTES.json과 비교 패치를 포함합니다.
+  새 ScanCache 모델을 위해 migrate가 필요합니다. 기존 DB를 지우지 마세요.
+  공공 API 결과만 최대24시간 캐시하며 AI는 현재 문구로 매번 다시 분석합니다.
+  공개 지급안내는최대2개, 공지·후기목록은각각1개씩 추가로 읽습니다(총최대4개).
+  로그인·시간초과·JS빈화면은미확인으로남기고없음으로가점하지않습니다.
+  화면 아래의 정상 공개 안내 링크도 찾되 숨김 링크는 제외합니다.
+  각 안내의 주소와 로그인 필요·시간 초과 등 제한 원인을 표시합니다.
+  AI 안내문 미수집과 키 미설정도 구분합니다.
+  사업자정보 점수는 출금 조건의 위험 판정과 별개임을 화면에 표시합니다.
+  메뉴 이름만 있는 줄은 규칙과 모델 입력, 단계 기록에서 제외합니다.
+  이전 버전의 메뉴 기록은 재사용 전에 정리하고 실제 안내문은 유지합니다.
+  직접 선택한 답변 경고에는 출처 안내를 표시합니다.
+  단계 목록의 나열 순서는 실제 관찰 시각의 순서를 뜻하지 않습니다.
+  analyses.ai.status=completed 및 signals[].source=ai가 실제 모델 성공 신호입니다.
+  source=rule은 백엔드의 제한적인 명시적 조건 규칙입니다. AI skipped/error에도 있을 수 있습니다.
+  관찰하지 못한 로그인 뒤 화면·외부 고객센터 대화는 '출금 조건 미확인'입니다.
+  사업자 원점수를 보존하고 최대 50점을 반영하며 AI 문구 분석 최대 50점을 합산합니다.
+  직접 입금 요구 50점, 보상/수익/출금 제한 전체 조합은 10점이며 중복 가점하지 않습니다.
+  개별 단계는 가점하지 않고 AI 판단 불가는 null/미확인입니다.
+  risk_score는 이미 합산된 값이므로 클라이언트에서 AI 점수를 다시 더하지 않습니다.
+  점수는 사기 확률이나 미확인 출금 조건의 안전 여부를 뜻하지 않습니다.
+  팝업을 열어 읽은 안내만 연결하며 팝업을 열지 않은 화면을 자동 감시하지 않습니다.
+  기록은 같은 사이트에서 브라우저 세션 동안 최대 2시간 유지됩니다.
+
+검증과 전달 범위
+  TEST_RESULTS.json: 이 전달 사본에서 실제 실행한 테스트 결과
+  PACKAGE_NOTES.json: 기준 커밋·전달 사본에만 적용한 환경변수/로그 설정 변경
+  SHA256SUMS.txt: 포함 파일 무결성
+  새 사이트 규칙 합성 화면: http://127.0.0.1:4173/tests/fixtures/site-rules.html?type=menu-login
+  type=healthy / no-notice / stale-notice / no-reviews / empty-review / no-both / all 로 바꿔 확인합니다.
+  healthy는새사이트가점0, menu-login은메뉴40, no-notice/stale-notice는50, no-reviews/empty-review는40, no-both는90→50, all은130→50입니다.
+  각독립사례는이전사이트기록을지운뒤팝업을여세요.
+  실제 OpenAI·공공 API 호출은0회이며 테스트 응답은모두모의입니다.
+  실제 로컬 Django HTTP 경로와 Chromium DOM은 검사했습니다.
+  설치형 Chrome 확장 검증은 Cloud 관리자 정책 때문에 수행하지 못했습니다.
+  .git/.env/.venv/node_modules/DB/로그/캐시/실제 인증키는 포함하지 않습니다.
+  기존 공개 저장소에 있던 하드코딩 인증값 3개는 이 전달 사본에서만 환경변수로 바꿨습니다.
+  Cloud 원본의 해당 인증 설정 파일은 변경하지 않았습니다. GitHub 쓰기는 하지 않았습니다.

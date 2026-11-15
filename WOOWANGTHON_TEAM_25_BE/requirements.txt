@@ -1,0 +1,12 @@
+Django
+djangorestframework
+django-cors-headers
+psycopg[binary]
+celery
+redis
+requests
+python-dotenv
+gunicorn
+sentry-sdk
+openai>=2,<3
+pydantic>=2,<3

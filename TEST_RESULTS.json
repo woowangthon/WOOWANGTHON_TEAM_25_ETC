@@ -1,0 +1,57 @@
+{
+  "version": "0.5.0",
+  "previous_version": "0.4.2",
+  "scoring_policy": "business50_ai50_v3",
+  "integrated_upstream_main": "1cc0344d3cc22785fab53b129bc0e48586397b59",
+  "frontend": {
+    "tests": 163,
+    "passed": 163,
+    "skipped": 0,
+    "duration": "1.7m",
+    "includes_actual_local_django_http_cases": 16,
+    "run": "NODE_PATH=<original FE>/node_modules BACKEND_ROOT=<delivery BE> BACKEND_PYTHON=<original BE>/.venv/bin/python <original FE>/node_modules/.bin/playwright test --config=<delivery FE>/playwright.config.js --reporter=line --output=<work>/site-rules-package-fe-results"
+  },
+  "backend": {
+    "tests": 192,
+    "passed": 192,
+    "skipped": 0,
+    "run": "cd <delivery BE>/app && <original BE>/.venv/bin/python manage.py test --verbosity 1",
+    "system_check": "passed",
+    "migration_drift_check": "No changes detected",
+    "scan_initial_migration": "Applied in isolated test database"
+  },
+  "manual_server": {
+    "actual_local_http_cases": 8,
+    "passed": 8,
+    "checks": [
+      "healthy0",
+      "menu+logindestination40",
+      "missingnotice50",
+      "stalenotice50",
+      "missingreviews40",
+      "emptyreviews40",
+      "notice+review90→50",
+      "allcriteria130→50",
+      "no fabricated directdepositwarning"
+    ]
+  },
+  "api_example_cases": 12,
+  "api_example": "SCORING_API_EXAMPLE.json: Actual Django APIClient paths with real SDK parser over MockTransport; old50/90/100 paths, newmenu40/notice50/review40, raw90/130→50 and directoverride; no live external API.",
+  "upstream_comparison": "All 34 main files preserved or intentionally integrated; exact FTC service and diagram blobs; see MERGE_NOTES.json and CHANGES_FROM_GITHUB_MAIN.patch.",
+  "other_checks": [
+    "node --check popup.js/flow.js/site-checks.js/tests/manual-server.cjs",
+    "git diff --check for both sources",
+    "original embedded credential byte values absent from delivery"
+  ],
+  "external_openai_and_public_business_api_responses": "mocked",
+  "actual_openai_calls": 0,
+  "actual_public_business_api_calls": 0,
+  "github_write_operations": 0,
+  "previous_release_read_only_site_investigation": "REAL_SITE_CHECKS.txt retains earlier public-site observations; no new model verification is claimed.",
+  "installed_chrome_verification": "Not performed; Cloud administrator extension-install policy blocks it. Ordinary headless Chromium DOM and mocked Chrome APIs used.",
+  "cache_verification": "14 backend ORM/API cases; actual local HTTP proves same URL public cache reuse with new AI/evidence and50→100 score; current-context AI never cached.",
+  "docker_build_verification": "Not performed; upstream Dockerfile retained and README command typo corrected.",
+  "compound_rule": "Only contributed malformednumber20 plus completed companynameNO_MATCH25 adds5; singleweights unchanged; missing/error/flags get no combo; API50withAI0 and100withAI50 verified.",
+  "site_rules": "Optional bounded public observations, last-calendar-month KSTcutoff; publicno-link absence scoped tocheckedpages, blockedunknown, rawAIcap50 and no site-onlydirectwarning.",
+  "scope_limit": "Heuristic evidence points, not calibrated fraud probabilities. Unknown AI remains null; private withdrawal conditions stay unverified."
+}

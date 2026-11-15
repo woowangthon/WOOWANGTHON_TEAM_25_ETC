@@ -1,0 +1,11 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.vscode
+.env
+.env.*
+*.sqlite3
+*.sqlite3-journal
